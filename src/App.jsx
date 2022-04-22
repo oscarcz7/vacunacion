@@ -148,7 +148,7 @@ function App() {
             </div>
             <div class="mb-3">
               <label for="ci" class="form-label">
-                CI
+                # CI
               </label>
               <input
                 type="number"
