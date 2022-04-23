@@ -17,6 +17,11 @@ Se encuentran hechas validaciones para los roles y además de validaciones en fo
 
 ### `https://vacunacion-5faf5.firebaseapp.com/login`
 
+## Acceso Sistema
+
+### Administrador -> email: administrador@mail.com - password: Password2022
+### Empleado -> email: ocatotazurita@gmail.com - password: Password2022
+
 --------------------------------------------------------------------------------------------------------------------
 
 ##  Getting Started with Create React App
