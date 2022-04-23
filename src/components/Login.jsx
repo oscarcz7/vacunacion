@@ -32,7 +32,7 @@ const Login = (props) => {
       setEmail("");
       setPassword("");
       setError(null);
-      props.history.push("/employee");
+      props.history.push("/dashboard");
     } catch (error) {
       if (error.code === "auth/user-not-found") {
         setError("Usuario o contraseña incorrecta");
@@ -59,7 +59,7 @@ const Login = (props) => {
               />
             </div>
             <div className="mb-3">
-              <label className="form-label">Password</label>
+              <label className="form-label">Contraseña</label>
               <input
                 className="form-control"
                 id="password"

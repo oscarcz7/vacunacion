@@ -17,12 +17,9 @@ const Navbar = (props) => {
       </Link>
       <div>
         <div className="d-flex ">
-          <NavLink className="btn btn-dark mx-3" to="/admin" exact>
-            Registro Empleados
-          </NavLink>
           {props.firebaseUser !== null ? (
-            <NavLink className="btn btn-dark mr-2" to="/employee">
-              Formulario
+            <NavLink className="btn btn-dark mr-2" to="/dashboard">
+              Inicio
             </NavLink>
           ) : null}
           {props.firebaseUser !== null ? (
