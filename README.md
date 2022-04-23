@@ -1,4 +1,25 @@
-# Getting Started with Create React App
+# 
+
+## Tecnologias
+React js
+Firebase - Firestore - Hosting -Auth
+
+## Desarrollo
+Aplicativo construido para el inventario de vacunación de empleados. Este cuenta con los roles Administrador y Empleado.
+El Administrador se encarga de registrar los empleados en el formulario, el aplicativo se encargara de crear una contraseña 'Password2022' para cada usuario y creara el usuario para el acceso en el sistema con el mismo correo de registro.
+El empleado tendrá acceso al formulario de actualización de su información.
+
+Se encuentran hechas validaciones para los roles y además de validaciones en formulario de ingreso al sistema.
+
+--------------------------------------------------------------------------------------------------------------------
+
+## Web
+
+### `https://vacunacion-5faf5.firebaseapp.com/login`
+
+--------------------------------------------------------------------------------------------------------------------
+
+##  Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
