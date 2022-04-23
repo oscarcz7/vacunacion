@@ -1,9 +1,8 @@
 import React from "react";
-import { db } from "../firebase";
+import { firestore } from "../firebase";
 
-const Firestore = (props) => {
-  const [data, setData] = React.useState([]);
-  const [info, setInfo] = React.useState("");
+const FormVaccine = (props) => {
+  const [registers, setRegisters] = React.useState([]);
   const [id, setId] = React.useState("");
   const [birthDate, setBirthDate] = React.useState("");
   const [address, setAddress] = React.useState("");
@@ -12,40 +11,52 @@ const Firestore = (props) => {
   const [vaccine, setVaccine] = React.useState("Sputnik");
   const [vaccineDate, setVaccineDate] = React.useState("09-09-2022");
   const [doses, setDoses] = React.useState(3);
-  const [modoEdicion, setModoEdicion] = React.useState(false);
 
   React.useEffect(() => {
-    const obtenerDatos = async () => {
-      try {
-        const data = await db.collection(props.user.uid).get();
-        const arrayData = data.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-
-        setData(arrayData);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    obtenerDatos();
+    const loggedIn = firestore.collection("users").doc(props.user.uid);
+    loggedIn
+      .get()
+      .then((doc) => {
+        if (doc.exists) {
+          const arrayData = doc.data();
+          console.log(arrayData);
+          setRegisters(Object.values(arrayData));
+        } else {
+          // doc.data() will be undefined in this case
+          console.log("No such document!");
+        }
+      })
+      .catch((error) => {
+        console.log("Error getting document:", error);
+      });
+    // const data = await firestore.collection(props.user.uid).get();
+    // const arrayData = data.docs.map((doc) => ({
+    //   id: doc.id,
+    //   ...doc.data(),
+    // }));
+    // console.log(arrayData);
+    // setRegisters(arrayData);
   }, []);
 
-  const activarEdicion = (item) => {
-    setModoEdicion(true);
-    setTarea(item.name);
-    setId(item.id);
+  const activateEdition = (info) => {
+    setId(info.id);
+    setBirthDate(info.birthDate);
+    setAddress(info.address);
+    setPhone(info.phone);
+    setStatus(info.status);
+    setVaccine(info.vaccine);
+    setVaccineDate(info.vaccineDate);
+    setDoses(info.doses);
   };
 
-  const editar = async (e) => {
+  const editInfo = async (e) => {
     e.preventDefault();
-    if (!info.trim()) {
+    if (!birthDate.trim()) {
       console.log("vacio");
       return;
     }
     try {
-      await db.collection(props.user.uid).doc(id).update({
+      await firestore.collection(props.user.uid).doc(id).update({
         birthDate: birthDate,
         address: address,
         phone: phone,
@@ -54,7 +65,16 @@ const Firestore = (props) => {
         vaccineDate: vaccineDate,
         doses: doses,
       });
-      const arrayEditado = data.map((item) =>
+      await firestore.collection("users").doc(props.user.uid).update({
+        birthDate: birthDate,
+        address: address,
+        phone: phone,
+        status: status,
+        vaccine: vaccine,
+        vaccineDate: vaccineDate,
+        doses: doses,
+      });
+      const arr = registers.map((item) =>
         item.id === id
           ? {
               id: item.id,
@@ -68,13 +88,15 @@ const Firestore = (props) => {
             }
           : item
       );
-      setData(arrayEditado);
-      setModoEdicion(false);
-      setInfo("");
+      setRegisters(arr);
       setId("");
       setBirthDate("");
       setAddress("");
       setPhone("");
+      setStatus("");
+      setVaccine("");
+      setVaccineDate();
+      setDoses("");
     } catch (error) {
       console.log(error);
     }
@@ -95,15 +117,28 @@ const Firestore = (props) => {
                 <th scope="col">Tipo</th>
                 <th scope="col">Fecha Vacunacion</th>
                 <th scope="col"># Dosis</th>
+                <th scope="col">Editar</th>
               </tr>
             </thead>
             <tbody>
-              {employees.map((employee) => [
-                <tr key={employee.id}>
-                  <td>{employee.name}</td>
-                  <td>{employee.lastName}</td>
-                  <td>{employee.email}</td>
-                  <td>{employee.CI}</td>
+              {registers.map((d) => [
+                <tr key={d.id}>
+                  <td>{d.birthDate}</td>
+                  <td>{d.phone}</td>
+                  
+                  <td>{d.address}</td>
+                  <td>{d.status}</td>
+                  <td>{d.vaccine}</td>
+                  <td>{d.vaccineDate}</td>
+                  <td>{d.doses}</td>
+                  <td>
+                    <button
+                      className="btn btn-warning btn-sm float-right mr-2"
+                      onClick={() => activateEdition(d)}
+                    >
+                      Editar
+                    </button>
+                  </td>
                 </tr>,
               ])}
             </tbody>
@@ -111,7 +146,7 @@ const Firestore = (props) => {
         </div>
         <div className="col-md-6">
           <h3>Formulario de Actualizacion</h3>
-          <form onSubmit="editar">
+          <form onSubmit={editInfo}>
             <input
               type="date"
               placeholder="Fecha de Nacimiento"
@@ -143,4 +178,4 @@ const Firestore = (props) => {
   );
 };
 
-export default Firestore;
+export default FormVaccine;
