@@ -1,5 +1,6 @@
 import React from "react";
 import { firestore, auth } from "../firebase";
+const FilterableTable = require("react-filterable-table");
 
 const Register = () => {
   const [employees, setEmployees] = React.useState([]);
@@ -68,7 +69,10 @@ const Register = () => {
         doses: doses,
       };
       await firestore.collection("users").doc(resp.user.uid).set(newEmp);
-      await firestore.collection(resp.user.email).doc(resp.user.uid).set(newEmp);
+      await firestore
+        .collection(resp.user.email)
+        .doc(resp.user.uid)
+        .set(newEmp);
 
       // updating data in time with new documents added to db
       setEmployees([...employees, { ...newEmp, id: resp.user.uid }]);
@@ -141,7 +145,7 @@ const Register = () => {
 
   return (
     <div className="container mt-5">
-    {/* Formulario de registro o actualizacion de datos */}
+      {/* Formulario de registro o actualizacion de datos */}
       <div className="row">
         <h4>
           {!updateMode ? "Registro de Usuarios" : "Actualizar Información"}
